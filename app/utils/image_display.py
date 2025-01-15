@@ -1,7 +1,8 @@
 import os
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QSizePolicy, QLineEdit
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QSizePolicy, QLineEdit, QGridLayout
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtCore import Qt, QSize
+from app.utils.alert_handler import AlertHandler
 
 
 class ImageDisplayHandler:
@@ -37,11 +38,13 @@ class ImageDisplayHandler:
         # Image name
         image_name = QLabel(image_path.split("/")[-1])
         image_name.setMaximumWidth(200)
+        image_name.setObjectName("imageName")
         details_layout.addWidget(image_name)
 
         # Optional year input
         if show_year_input:
             year_input = QLineEdit()
+            year_input.setObjectName("yearInput")
             year_input.setPlaceholderText("Year")
             year_input.setFixedWidth(100)
             year_input.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
@@ -68,11 +71,56 @@ class ImageDisplayHandler:
             widget.deleteLater()
 
             # Rebuild the layout to ensure proper alignment
-            self.clear_layout(layout)
-            for index, path in enumerate(image_paths):
-                row, col = divmod(index, 2)
-                new_widget = self.create_image_widget(
-                    path, show_year_input=True,
-                    remove_callback=lambda w=widget, p=path: self.remove_image(w, p, image_paths, layout)
-                )
-                layout.addWidget(new_widget, row, col)
+            self.populate_scroll_area(layout.parentWidget(), image_paths, show_year_input=True)
+
+    def populate_scroll_area(self, container, image_paths, show_year_input=False):
+        """Add image widgets to the scroll area (2 per row)."""
+        layout = container.layout()
+        if layout is None:
+            layout = QGridLayout()
+            container.setLayout(layout)
+
+        self.clear_layout(layout)
+
+        for index, image_path in enumerate(image_paths):
+            widget = self.create_image_widget(
+                image_path,
+                show_year_input=show_year_input,
+                remove_callback=lambda widget, path=image_path: self.remove_image(
+                    widget, path, image_paths, layout
+                ),
+            )
+            row, col = divmod(index, 2)
+            layout.addWidget(widget, row, col)
+
+    def get_images_with_years(self, container):
+        """Retrieve image filenames and their associated years from the scroll area."""
+        layout = container.layout()
+        images_with_years = {}
+        if not layout:
+            return images_with_years
+
+        for i in range(layout.count()):
+            widget = layout.itemAt(i).widget()
+            if widget:
+                image_name = widget.findChild(QLabel, "imageName").text()
+                year_input = widget.findChild(QLineEdit, "yearInput").text().strip()
+                if image_name and year_input.isdigit():
+                    images_with_years[image_name] = int(year_input)
+
+        return images_with_years
+
+    def validate_image_years(self, container):
+        """Ensure all images in the scroll area have valid years."""
+        layout = container.layout()
+        if not layout:
+            return True
+
+        for i in range(layout.count()):
+            widget = layout.itemAt(i).widget()
+            if widget:
+                year_input = widget.findChild(QLineEdit, "yearInput")
+                if not year_input or not year_input.text().strip().isdigit():
+                    AlertHandler.show_error("Each image must have a valid year specified. Please fill in all year inputs.")
+                    return False
+        return True

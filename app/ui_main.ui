@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1316</width>
+    <width>1266</width>
     <height>755</height>
    </rect>
   </property>
@@ -484,7 +484,7 @@
                     </sizepolicy>
                    </property>
                    <property name="text">
-                    <string>Browse images and upload:</string>
+                    <string>Browse images and upload</string>
                    </property>
                   </widget>
                  </item>
@@ -675,7 +675,7 @@
                     <bool>true</bool>
                    </property>
                    <property name="currentText">
-                    <string>Select a country</string>
+                    <string/>
                    </property>
                    <property name="currentIndex">
                     <number>-1</number>
@@ -789,8 +789,11 @@
                    <property name="focusPolicy">
                     <enum>Qt::WheelFocus</enum>
                    </property>
+                   <property name="inputMask">
+                    <string/>
+                   </property>
                    <property name="text">
-                    <string>Latitude </string>
+                    <string/>
                    </property>
                    <property name="frame">
                     <bool>true</bool>
@@ -799,10 +802,10 @@
                     <enum>QLineEdit::Normal</enum>
                    </property>
                    <property name="cursorPosition">
-                    <number>9</number>
+                    <number>0</number>
                    </property>
                    <property name="placeholderText">
-                    <string/>
+                    <string>Latitude</string>
                    </property>
                    <property name="clearButtonEnabled">
                     <bool>false</bool>
@@ -836,7 +839,7 @@
                     <enum>Qt::WheelFocus</enum>
                    </property>
                    <property name="text">
-                    <string>Longitude</string>
+                    <string/>
                    </property>
                    <property name="frame">
                     <bool>true</bool>
@@ -845,10 +848,10 @@
                     <enum>QLineEdit::Normal</enum>
                    </property>
                    <property name="cursorPosition">
-                    <number>9</number>
+                    <number>0</number>
                    </property>
                    <property name="placeholderText">
-                    <string/>
+                    <string>Longitude</string>
                    </property>
                    <property name="clearButtonEnabled">
                     <bool>false</bool>
@@ -892,8 +895,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1084</width>
-                   <height>423</height>
+                   <width>1034</width>
+                   <height>428</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -905,10 +908,10 @@
                 </widget>
                </widget>
               </item>
-              <item alignment="Qt::AlignRight">
+              <item alignment="Qt::AlignRight|Qt::AlignVCenter">
                <widget class="QWidget" name="saveContainer" native="true">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
@@ -924,23 +927,58 @@
                   <number>5</number>
                  </property>
                  <property name="rightMargin">
-                  <number>5</number>
+                  <number>10</number>
                  </property>
                  <property name="bottomMargin">
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QPushButton" name="saveButton">
+                  <widget class="QLabel" name="saveNameLabel">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="text">
+                    <string>Insert name:</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="saveNameInput">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
                    <property name="minimumSize">
                     <size>
-                     <width>150</width>
-                     <height>30</height>
+                     <width>200</width>
+                     <height>25</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>150</width>
-                     <height>30</height>
+                     <width>200</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="saveButton">
+                   <property name="minimumSize">
+                    <size>
+                     <width>130</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>130</width>
+                     <height>25</height>
                     </size>
                    </property>
                    <property name="text">
@@ -952,14 +990,14 @@
                   <widget class="QPushButton" name="continueButton">
                    <property name="minimumSize">
                     <size>
-                     <width>150</width>
-                     <height>30</height>
+                     <width>130</width>
+                     <height>25</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>150</width>
-                     <height>30</height>
+                     <width>130</width>
+                     <height>25</height>
                     </size>
                    </property>
                    <property name="text">
@@ -1298,8 +1336,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1084</width>
-                   <height>522</height>
+                   <width>98</width>
+                   <height>28</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -1548,8 +1586,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1084</width>
-                   <height>522</height>
+                   <width>98</width>
+                   <height>28</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
