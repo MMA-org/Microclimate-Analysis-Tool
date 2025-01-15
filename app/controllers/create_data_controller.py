@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QVBoxLayout, QHBoxLayout, QCompleter
+from PyQt5.QtWidgets import QGridLayout, QCompleter
 from PyQt5.QtCore import Qt
 from app.utils.countries_now_handler import get_countries, get_cities_by_country
 from app.utils.file_handler import FileHandler
@@ -8,8 +8,8 @@ from app.utils.image_display import ImageDisplayHandler
 class CreateDataController:
     def __init__(self, main_window):
         self.main_window = main_window
-        self.file_handler = FileHandler()  # FileHandler for file operations
-        self.image_display_handler = ImageDisplayHandler()  # ImageDisplayHandler for managing image widgets
+        self.file_handler = FileHandler()
+        self.image_display_handler = ImageDisplayHandler()
         self.image_paths = []
 
         # Country and city data
@@ -20,7 +20,6 @@ class CreateDataController:
         self.setup_country_combobox()
         self.main_window.appCountryCombo.currentIndexChanged.connect(self.update_cities)
         self._connect_signals()
-
         self.toggle_inputs()
 
     def setup_country_combobox(self):
@@ -85,15 +84,22 @@ class CreateDataController:
     def _populate_scroll_area(self):
         """Add image widgets to the scroll area (2 per row)."""
         container = self.main_window.createScrollAreaContents
-        self.image_display_handler.clear_layout(container)
-        grid_layout = QVBoxLayout(container)
 
-        row_layout = None
+        # Reuse the existing layout if it exists, otherwise create a new one
+        layout = container.layout()
+        if layout is None:
+            layout = QGridLayout()
+            container.setLayout(layout)
+
+        # Clear existing widgets in the layout
+        self.image_display_handler.clear_layout(layout)
+
         for index, image_path in enumerate(self.image_paths):
-            if index % 2 == 0:
-                row_layout = QHBoxLayout()
-                grid_layout.addLayout(row_layout)
-            widget = self.image_display_handler.create_image_widget(image_path, show_year_input=True)
-            row_layout.addWidget(widget)
-
-        container.setLayout(grid_layout)
+            widget = self.image_display_handler.create_image_widget(
+                image_path, show_year_input=True,
+                remove_callback=lambda widget, path=image_path: self.image_display_handler.remove_image(
+                    widget, path, self.image_paths, layout
+                )
+            )
+            row, col = divmod(index, 2)
+            layout.addWidget(widget, row, col)
