@@ -11,4 +11,5 @@ class FileHandler:
 
     def validate_file_paths(self, input_text):
         """Validate and clean file paths from text input."""
-        return [path.strip() for path in input_text.split(",") if os.path.isfile(path.strip())]
+        paths = [path.strip() for path in input_text.splitlines() if path.strip()]
+        return [path for path in paths if os.path.isfile(path)]

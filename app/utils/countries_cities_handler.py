@@ -16,9 +16,18 @@ def get_cities_by_country(country_name):
         data = response.json()
         if not data.get("error", True):
             return data.get("data", [])
-        else:
-            print(f"Error fetching cities: {data.get('msg')}")
-            return []
-    else:
-        print(f"API Error: {response.status_code} - {response.text}")
-        return []
+    return []
+
+def setup_country_combobox(combo):
+    """Set up the country ComboBox with placeholder and items."""
+    combo.addItems(["Select a country"])
+    combo.addItems(sorted(get_countries()))
+
+def setup_city_combobox(country_combo, city_combo):
+    """Fetch and set up the city ComboBox based on selected country."""
+    country = country_combo.currentText().strip()
+    city_combo.clear()
+    if not country or country == "Select a country":
+        return
+    cities = get_cities_by_country(country)
+    city_combo.addItems(sorted(cities) if cities else [])
