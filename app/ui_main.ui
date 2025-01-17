@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1266</width>
+    <width>1489</width>
     <height>747</height>
    </rect>
   </property>
@@ -336,7 +336,7 @@
              <number>1</number>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="createDataPage">
              <property name="sizePolicy">
@@ -856,7 +856,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1034</width>
+                   <width>1257</width>
                    <height>420</height>
                   </rect>
                  </property>
@@ -1010,7 +1010,7 @@
               <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
                <widget class="QWidget" name="segmentDataContainer" native="true">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
@@ -1103,6 +1103,31 @@
                      <width>400</width>
                      <height>25</height>
                     </size>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="segmentUploadButton">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>120</width>
+                     <height>25</height>
+                    </size>
+                   </property>
+                   <property name="text">
+                    <string>Upload</string>
                    </property>
                   </widget>
                  </item>
@@ -1256,7 +1281,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1034</width>
+                   <width>1257</width>
                    <height>514</height>
                   </rect>
                  </property>
@@ -1366,7 +1391,7 @@
                   <number>0</number>
                  </property>
                  <item>
-                  <widget class="QLabel" name="analysisUploadLabel">
+                  <widget class="QLabel" name="analysisChooseLabel">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -1379,7 +1404,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QComboBox" name="segmentChooseCombo_2">
+                  <widget class="QComboBox" name="analysisChooseCombo">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -1543,7 +1568,7 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1034</width>
+                   <width>1257</width>
                    <height>514</height>
                   </rect>
                  </property>

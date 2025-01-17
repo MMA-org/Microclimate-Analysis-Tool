@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.uic import loadUi
 from app.controllers.sidebar_controller import SidebarController
 from app.controllers.create_data_controller import CreateDataController
+from app.controllers.segment_data_controller import SegmentDataController
 
 class MainApp(QMainWindow):
     """
@@ -33,6 +34,7 @@ class MainApp(QMainWindow):
         # Sidebar Controller
         self.sidebar_controller = SidebarController(self)
         self.create_data_controller = CreateDataController(self)
+        self.segment_data_controller = SegmentDataController(self)
 
         # Load styles
         self.load_styles()
