@@ -1,3 +1,7 @@
+"""
+Utility for displaying alerts in the GUI application.
+"""
+
 from PyQt5.QtWidgets import QMessageBox
 
 class AlertHandler:
@@ -12,7 +16,7 @@ class AlertHandler:
 
     @staticmethod
     def show_info(message, title="Information"):
-        """Show an informational alert to the user."""
+        """Show an info alert to the user."""
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
         msg.setText(message)

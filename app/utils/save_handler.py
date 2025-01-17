@@ -1,3 +1,7 @@
+"""
+Utility for managing saving operations, including session directories, images, and metadata.
+"""
+
 import os
 import shutil
 import json

@@ -1,3 +1,7 @@
+"""
+Utility for handling file browsing and validation in the GUI application.
+"""
+
 import os
 from PyQt5.QtWidgets import QFileDialog
 

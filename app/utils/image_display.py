@@ -1,3 +1,7 @@
+"""
+Utility for managing image display in the GUI application.
+"""
+
 import os
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QSizePolicy, QLineEdit, QGridLayout
 from PyQt5.QtGui import QPixmap, QIcon

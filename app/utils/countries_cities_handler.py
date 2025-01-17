@@ -1,3 +1,6 @@
+"""
+Utility functions for handling countries and cities in the GUI application.
+"""
 import requests
 import pycountry
 
