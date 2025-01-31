@@ -31,7 +31,7 @@ class MainApp(QMainWindow):
         # Load UI
         self.ui = loadUi("./app/ui_main.ui", self)
 
-        # Sidebar Controller
+        # Load Controller
         self.sidebar_controller = SidebarController(self)
         self.create_data_controller = CreateDataController(self)
         self.segment_data_controller = SegmentDataController(self)
@@ -55,11 +55,13 @@ class MainApp(QMainWindow):
                 styles = json.load(file)
 
             stylesheet = ""
+
             for widget, properties in styles.items():
                 style_string = "; ".join(f"{key}: {value}" for key, value in properties.items())
                 stylesheet += f"{widget} {{ {style_string} }}\n"
 
             self.setStyleSheet(stylesheet)
+
         except Exception as e:
             print(f"Error loading styles: {e}")
 
@@ -67,7 +69,6 @@ class MainApp(QMainWindow):
 if __name__ == "__main__":
     """
     Entry point for the application.
-
     Initializes the QApplication, creates the main window, and starts the event loop.
     """
     app = QApplication(sys.argv)

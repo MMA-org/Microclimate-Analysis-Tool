@@ -31,10 +31,8 @@ class CreateDataController(PageController):
         self.toggle_inputs()
 
     def _setup_ui(self):
-        """
-        Initialize UI components and connect signals.
-        Connects comboboxes, radio buttons, and action buttons to their respective methods.
-        """
+        "Initialize UI components and connect signals."
+
         setup_country_combobox(self.ui.appCountryCombo)
         self.ui.appCountryCombo.currentIndexChanged.connect(self.update_cities)
         self.ui.appSelectRadio.toggled.connect(lambda: self.toggle_inputs())
@@ -48,9 +46,8 @@ class CreateDataController(PageController):
         self.ui.saveButton.clicked.connect(self.handle_save)
 
     def toggle_inputs(self):
-        """
-        Enable or disable input fields based on the selected radio button.
-        """
+        "Enable or disable input fields based on the selected radio button."
+
         widget_groups = {
             "group1": [self.ui.appCountryCombo, self.ui.appCityCombo],
             "group2": [self.ui.userLatitudeInput, self.ui.userLongitudeInput],
@@ -58,14 +55,9 @@ class CreateDataController(PageController):
         self.handle_toggle_inputs(self.ui.appSelectRadio, self.ui.insertRadio, widget_groups)
 
     def update_cities(self):
-        """
-        Update the city combobox based on the selected country.
-        Calls the utility function to populate the city combobox dynamically.
-        """
-        setup_city_combobox(
-            country_combo=self.ui.appCountryCombo,
-            city_combo=self.ui.appCityCombo,
-        )
+        "Update the city combobox based on the selected country."
+
+        setup_city_combobox(self.ui.appCountryCombo, self.ui.appCityCombo)
 
     def handle_save(self):
         """
@@ -75,21 +67,27 @@ class CreateDataController(PageController):
         if not self._validate_save():
             return
 
-        session_name = self.ui.saveNameInput.text().strip()
-        SaveHandler.save_images(self.image_paths, session_name)
-
+        coordinates = self._get_coordinates()
+        if not coordinates or coordinates.get("latitude") is None or coordinates.get("longitude") is None:
+            AlertHandler.show_error("Failed to fetch location coordinates. Please try again or enter manually.")
+            return
+        
         metadata = {
-            "coordinates": self._get_coordinates(),
+            "coordinates": coordinates,
             "images": self.image_display_handler.get_images_with_years(self.ui.createScrollAreaContents),
         }
+
+        session_name = self.ui.saveNameInput.text().strip()
+        
+        SaveHandler.save_images(self.image_paths, session_name)
         SaveHandler.save_metadata(metadata, session_name)
         AlertHandler.show_info("Data saved successfully!")
+
         self.clear_page()
 
     def clear_page(self):
-        """
-        Clear all inputs and reset the page to its initial state.
-        """
+        "Clear all inputs and reset the page to its initial state."
+
         self.ui.saveNameInput.clear()
         self.ui.createBrowseInput.clear()
 
@@ -102,13 +100,10 @@ class CreateDataController(PageController):
     def _validate_save(self):
         """
         Perform all necessary validations before saving session data.
-
         Validates session name, image uploads, location inputs, and image years.
-
-        Returns:
-            bool: True if all validations pass, False otherwise.
         """
         session_name = self.ui.saveNameInput.text().strip()
+
         if not session_name:
             return AlertHandler.show_error("Please enter a name for this data.")
 
@@ -119,11 +114,11 @@ class CreateDataController(PageController):
             return AlertHandler.show_error("No images have been uploaded. Please upload images before saving.")
 
         if self.ui.appSelectRadio.isChecked():
-            if not self._validate_combobox(self.ui.appCountryCombo, "Select a country", "country"):
+            if not self._validate_combobox(self.ui.appCountryCombo, "Select a country", "country") or \
+               not self._validate_combobox(self.ui.appCityCombo, "Select a city", "city"):
                 return False
-            if not self._validate_combobox(self.ui.appCityCombo, "Select a city", "city"):
-                return False
-        elif not self._validate_coordinates():
+            
+        elif not self._validate_user_coordinates():
             return False
 
         if not self._validate_image_years():
@@ -132,44 +127,34 @@ class CreateDataController(PageController):
         return True
 
     def _validate_combobox(self, combo, placeholder, field_name):
-        """
-        Check if a combobox has a valid selection.
+        "Check if a combobox has a valid selection."
 
-        Args:
-            combo (QComboBox): The combobox to validate.
-            placeholder (str): Placeholder text to check against.
-            field_name (str): Name of the field for error messages.
-
-        Returns:
-            bool: True if the combobox has a valid selection, False otherwise.
-        """
         value = combo.currentText().strip()
+
         if not value or value == placeholder:
             AlertHandler.show_error(f"Please select a valid {field_name}.")
             return False
+        
         return True
 
-    def _validate_coordinates(self):
-        """
-        Validate latitude and longitude inputs.
+    def _validate_user_coordinates(self):
+        "Validate latitude and longitude inputs."
 
-        Ensures that latitude and longitude values are provided and are valid numbers.
+        lat, lon = self.ui.userLatitudeInput.text().strip(), self.ui.userLongitudeInput.text().strip()
 
-        Returns:
-            bool: True if inputs are valid, False otherwise.
-        """
-        lat = self.ui.userLatitudeInput.text().strip()
-        lon = self.ui.userLongitudeInput.text().strip()
         if not lat or not lon:
             AlertHandler.show_error("Latitude and longitude must be provided.")
             return False
+        
         if not lat.replace(".", "", 1).isdigit() or not lon.replace(".", "", 1).isdigit():
             AlertHandler.show_error("Latitude and longitude must be valid numbers.")
             return False
+        
         return True
     
     def _validate_image_years(self):
-        """Ensure all images in the scroll area have valid years."""
+        "Ensure all images in the scroll area have valid years."
+
         layout = self.ui.createScrollAreaContents.layout()
         if not layout:
             return True
@@ -185,6 +170,7 @@ class CreateDataController(PageController):
             
             year_text = year_input.text().strip()
             current_year = datetime.datetime.now().year # Get the current year dynamically
+
             if not year_text.isdigit() or not (1900 <= int(year_text) <= current_year):
                 AlertHandler.show_error(f"Each image must have a valid year from 1990 and {current_year}.")
                 return False
@@ -194,18 +180,16 @@ class CreateDataController(PageController):
     def _get_coordinates(self):
         """
         Retrieve coordinates from inputs or API.
-
-        - If 'Select Mode' is enabled, fetch coordinates from API using selected country and city.
+        - If 'Select Country/City radio button' is enabled, fetch coordinates from API using selected country and city.
         - Otherwise, use manually inserted latitude and longitude.
         """
         if self.ui.appSelectRadio.isChecked():
             country = self.ui.appCountryCombo.currentText().strip()
             city = self.ui.appCityCombo.currentText().strip()
-            if country and city and country != "Select a country" and city != "Select a city":
-                coords = get_coordinates(city, country)
-                if coords:
-                    return coords
-        return {
-            "latitude": self.ui.userLatitudeInput.text().strip(),
-            "longitude": self.ui.userLongitudeInput.text().strip(),
-        }
+            return get_coordinates(country, city)
+        
+        else:
+            return {
+                "latitude": self.ui.userLatitudeInput.text().strip(),
+                "longitude": self.ui.userLongitudeInput.text().strip(),
+            }

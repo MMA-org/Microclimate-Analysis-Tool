@@ -39,7 +39,6 @@ class SidebarController:
     def toggle_sidebar(self):
         """
         Toggle the visibility of the sidebar.
-
         This method changes the visibility of the sidebar container by inverting the current state
         of `sidebar_expanded` and updates the UI accordingly.
         """
@@ -51,11 +50,6 @@ class SidebarController:
     def switch_page(self, page_index, active_button):
         """
         Switch to the specified page and update button styles.
-
-        Args:
-            page_index (int): The index of the page to switch to.
-            active_button (QPushButton): The button associated with the active page.
-
         This method updates the current page in the `pagesContainer` and ensures that the active
         button is visually highlighted.
         """
