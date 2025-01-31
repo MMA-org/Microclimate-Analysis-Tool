@@ -113,16 +113,27 @@ class ImageDisplayHandler:
         """Retrieve image filenames and their associated years from the scroll area."""
         layout = container.layout()
         images_with_years = {}
+
         if not layout:
             return images_with_years
 
         for i in range(layout.count()):
             widget = layout.itemAt(i).widget()
-            if widget:
-                image_name = widget.findChild(QLabel, "imageName").text()
-                year_input = widget.findChild(QLineEdit, "yearInput").text().strip()
-                if image_name and year_input.isdigit():
-                    images_with_years[image_name] = int(year_input)
+            if not widget:
+                continue
+
+            image_label = widget.findChild(QLabel, "imageName")
+            year_input = widget.findChild(QLineEdit, "yearInput")
+
+            if not image_label:  
+                continue
+            
+            image_name = image_label.text()
+            year_text = year_input.text().strip() if year_input else ""
+            
+            if year_text.isdigit():
+                images_with_years[image_name] = int(year_text)
 
         return images_with_years
+
 

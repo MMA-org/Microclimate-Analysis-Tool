@@ -6,7 +6,6 @@ import os
 import shutil
 import json
 
-
 class SaveHandler:
     BASE_DIR = "Microclimate analysis data"
 

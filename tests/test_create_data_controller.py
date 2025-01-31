@@ -60,7 +60,7 @@ def test_update_cities(create_data_controller):
 
     controller.ui.appCountryCombo.setCurrentIndex(1)
 
-    with patch("app.utils.countries_cities_handler.get_cities_by_country", return_value=["Haifa", "Tel Aviv"]):
+    with patch("app.utils.location_handler.get_cities_by_country", return_value=["Haifa", "Tel Aviv"]):
         controller.update_cities()
 
     assert "Haifa" in [controller.ui.appCityCombo.itemText(i) for i in range(controller.ui.appCityCombo.count())]
@@ -183,3 +183,61 @@ def test_clear_page(create_data_controller):
     assert controller.ui.saveNameInput.text() == ""
     assert controller.ui.createBrowseInput.text() == ""
     assert not controller.image_paths
+
+def test_get_coordinates_valid(create_data_controller):
+    """Test fetching coordinates for a valid city and country (Israel, Haifa)."""
+    from app.utils.location_handler import get_coordinates
+
+    expected_coords = {"latitude": 32.8191218, "longitude": 34.9983856}
+    actual_coords = get_coordinates("Haifa", "Israel")
+
+    assert actual_coords is not None, "Coordinates should not be None for valid city and country."
+    assert abs(actual_coords["latitude"] - expected_coords["latitude"]) < 0.01, "Latitude mismatch."
+    assert abs(actual_coords["longitude"] - expected_coords["longitude"]) < 0.01, "Longitude mismatch."
+
+
+def test_handle_save_with_valid_coordinates(create_data_controller):
+    """Test save functionality with valid country, city, and correct coordinates."""
+    controller = create_data_controller
+    controller.ui.saveNameInput.setText("TestSession")
+    controller.image_paths = ["test_image.jpg"]
+
+    SaveHandler.save_images = MagicMock()
+    SaveHandler.save_metadata = MagicMock()
+    AlertHandler.show_info = MagicMock()
+    AlertHandler.show_error = MagicMock()
+
+    controller.image_display_handler.get_images_with_years = MagicMock(
+        return_value={"test_image.jpg": 2023}
+    )
+
+    controller._get_coordinates = MagicMock(return_value={"latitude": 32.8191218, "longitude": 34.9983856})
+    controller._validate_save = MagicMock(return_value=True)
+
+    controller.handle_save()
+
+    SaveHandler.save_images.assert_called_once_with(["test_image.jpg"], "TestSession")
+    SaveHandler.save_metadata.assert_called_once_with(
+        {
+            "coordinates": {"latitude": 32.8191218, "longitude": 34.9983856},
+            "images": {"test_image.jpg": 2023},
+        },
+        "TestSession",
+    )
+    AlertHandler.show_info.assert_called_once_with("Data saved successfully!")
+    AlertHandler.show_error.assert_not_called()
+
+
+def test_handle_save_with_missing_coordinates(create_data_controller):
+    """Test that an error occurs when coordinates are missing in save."""
+    controller = create_data_controller
+    controller.ui.saveNameInput.setText("TestSession")
+    controller.image_paths = ["test_image.jpg"]
+
+    AlertHandler.show_error = MagicMock()
+
+    controller.ui.userLatitudeInput.setText("")
+    controller.ui.userLongitudeInput.setText("")
+
+    assert not controller._validate_coordinates()
+    AlertHandler.show_error.assert_called_once_with("Latitude and longitude must be provided.")

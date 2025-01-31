@@ -3,11 +3,12 @@ Controller for managing the 'Create Data' page in the GUI application.
 """
 
 import os
-from app.utils.countries_cities_handler import setup_country_combobox, setup_city_combobox
+from app.utils.location_handler import *
 from app.utils.save_handler import SaveHandler
 from app.utils.alert_handler import AlertHandler
 from app.controllers.page_controller import PageController
 from PyQt5.QtWidgets import QLineEdit
+import datetime
 
 class CreateDataController(PageController):
     """
@@ -26,7 +27,6 @@ class CreateDataController(PageController):
     def __init__(self, main_window):
         super().__init__()
         self.ui = main_window
-
         self._setup_ui()
         self.toggle_inputs()
 
@@ -176,27 +176,36 @@ class CreateDataController(PageController):
 
         for i in range(layout.count()):
             widget = layout.itemAt(i).widget()
-            if widget:
-                year_input = widget.findChild(QLineEdit, "yearInput")
-                if not year_input or not year_input.text().strip().isdigit():
-                    AlertHandler.show_error("Each image must have a valid year specified. Please fill in all year inputs.")
-                    return False
+            if not widget:
+                continue
+            
+            year_input = widget.findChild(QLineEdit, "yearInput")
+            if not year_input:
+                continue
+            
+            year_text = year_input.text().strip()
+            current_year = datetime.datetime.now().year # Get the current year dynamically
+            if not year_text.isdigit() or not (1900 <= int(year_text) <= current_year):
+                AlertHandler.show_error(f"Each image must have a valid year from 1990 and {current_year}.")
+                return False
+
         return True
 
     def _get_coordinates(self):
         """
         Retrieve coordinates from inputs or API.
 
-        If 'Select Mode' is enabled, retrieves coordinates from an API (placeholder for now).
-        Otherwise, retrieves latitude and longitude from user inputs.
-
-        Returns:
-            dict: A dictionary containing latitude and longitude values.
+        - If 'Select Mode' is enabled, fetch coordinates from API using selected country and city.
+        - Otherwise, use manually inserted latitude and longitude.
         """
         if self.ui.appSelectRadio.isChecked():
-            return {"latitude": None, "longitude": None}  # Replace with API call
+            country = self.ui.appCountryCombo.currentText().strip()
+            city = self.ui.appCityCombo.currentText().strip()
+            if country and city and country != "Select a country" and city != "Select a city":
+                coords = get_coordinates(city, country)
+                if coords:
+                    return coords
         return {
             "latitude": self.ui.userLatitudeInput.text().strip(),
             "longitude": self.ui.userLongitudeInput.text().strip(),
         }
-    
