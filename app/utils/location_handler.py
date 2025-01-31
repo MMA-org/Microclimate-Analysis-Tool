@@ -1,7 +1,11 @@
+"""
+Utility functions for handling locations in the GUI application.
+"""
 import requests
 import pycountry
 
-BASE_URL = "https://countriesnow.space/api/v0.1/countries/cities"
+CN_URL = "https://countriesnow.space/api/v0.1/countries/cities"
+OSM_URL = "https://nominatim.openstreetmap.org/search.php"
 
 def get_countries():
     """Fetch a list of all country names."""
@@ -11,12 +15,28 @@ def get_cities_by_country(country_name):
     """Fetch cities for a given country using Countries Now API."""
     payload = {"country": country_name}
     headers = {"Content-Type": "application/json"}
-    response = requests.post(BASE_URL, json=payload, headers=headers)
+    response = requests.post(CN_URL, json=payload, headers=headers)
     if response.status_code == 200:
         data = response.json()
         if not data.get("error", True):
             return data.get("data", [])
     return []
+
+def get_coordinates(city, country):
+    """Fetch coordinates (latitude, longitude) for a given city using OpenStreetMap API."""
+    query = f"{city}, {country}" if country else city
+    params = {"q": query, "format": "jsonv2"}
+    headers = {"User-Agent": "MyApp/1.0"}
+    
+    response = requests.get(OSM_URL, params=params, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        if data:
+            return {
+                "latitude": float(data[0]["lat"]),
+                "longitude": float(data[0]["lon"])
+            }
+    return None
 
 def setup_country_combobox(combo):
     """Set up the country ComboBox with placeholder and items."""

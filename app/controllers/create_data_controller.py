@@ -1,78 +1,77 @@
+"""
+Controller for managing the 'Create Data' page in the GUI application.
+"""
+
 import os
-from app.utils.countries_cities_handler import setup_country_combobox, setup_city_combobox
-from app.utils.file_handler import FileHandler
-from app.utils.image_display import ImageDisplayHandler
+from app.utils.location_handler import *
 from app.utils.save_handler import SaveHandler
 from app.utils.alert_handler import AlertHandler
+from app.controllers.page_controller import PageController
+from PyQt5.QtWidgets import QLineEdit
+import datetime
 
+class CreateDataController(PageController):
+    """
+    Controller for managing the 'Create Data' page.
 
-class CreateDataController:
+    This class handles functionalities such as file browsing and uploading,
+    validating inputs, saving session data, and dynamically updating the UI.
+
+    Args:
+        main_window (QMainWindow): The main application window containing the UI components.
+
+    Attributes:
+        ui (QMainWindow): Reference to the main window's UI.
+    """
+
     def __init__(self, main_window):
+        super().__init__()
         self.ui = main_window
-        self.file_handler = FileHandler()
-        self.image_display_handler = ImageDisplayHandler()
-        self.image_paths = []
-
-        # Setup UI and signals
         self._setup_ui()
         self.toggle_inputs()
 
     def _setup_ui(self):
-        """Initialize UI components and connect signals."""
+        """
+        Initialize UI components and connect signals.
+        Connects comboboxes, radio buttons, and action buttons to their respective methods.
+        """
         setup_country_combobox(self.ui.appCountryCombo)
         self.ui.appCountryCombo.currentIndexChanged.connect(self.update_cities)
-        self.ui.appSelectRadio.toggled.connect(self.toggle_inputs)
-        self.ui.insertRadio.toggled.connect(self.toggle_inputs)
-        self.ui.createBrowseButton.clicked.connect(self.handle_browse_files)
-        self.ui.createUploadButton.clicked.connect(self.handle_upload_files)
+        self.ui.appSelectRadio.toggled.connect(lambda: self.toggle_inputs())
+        self.ui.insertRadio.toggled.connect(lambda: self.toggle_inputs())
+        self.ui.createBrowseButton.clicked.connect(
+            lambda: self.handle_browse_files(self.ui.createBrowseInput)
+        )
+        self.ui.createUploadButton.clicked.connect(
+            lambda: self.handle_upload_files(self.ui.createBrowseInput, self.ui.createScrollAreaContents, show_year_input=True)
+        )
         self.ui.saveButton.clicked.connect(self.handle_save)
 
     def toggle_inputs(self):
-        """Enable or disable inputs based on radio button selection."""
-        is_select_mode = self.ui.appSelectRadio.isChecked()
-        self.ui.appCountryCombo.setEnabled(is_select_mode)
-        self.ui.appCityCombo.setEnabled(is_select_mode)
-        self.ui.userLatitudeInput.setEnabled(not is_select_mode)
-        self.ui.userLongitudeInput.setEnabled(not is_select_mode)
+        """
+        Enable or disable input fields based on the selected radio button.
+        """
+        widget_groups = {
+            "group1": [self.ui.appCountryCombo, self.ui.appCityCombo],
+            "group2": [self.ui.userLatitudeInput, self.ui.userLongitudeInput],
+        }
+        self.handle_toggle_inputs(self.ui.appSelectRadio, self.ui.insertRadio, widget_groups)
 
     def update_cities(self):
-        """Update city ComboBox based on selected country."""
+        """
+        Update the city combobox based on the selected country.
+        Calls the utility function to populate the city combobox dynamically.
+        """
         setup_city_combobox(
             country_combo=self.ui.appCountryCombo,
             city_combo=self.ui.appCityCombo,
         )
 
-    def handle_browse_files(self):
-        """Browse and select image files."""
-        file_paths = self.file_handler.browse_files()
-        if file_paths:
-            self.image_paths = list(set(self.image_paths + file_paths))
-            self.ui.createBrowseInput.setText(file_paths[0])
-
-    def handle_upload_files(self):
-        """Validate and upload files."""
-        input_text = self.ui.createBrowseInput.text().strip()
-        if not input_text:
-            return AlertHandler.show_error("No file path provided. Please browse and select files to upload.")
-
-        new_paths = self.file_handler.validate_file_paths(input_text)
-        if not new_paths:
-            return AlertHandler.show_error("No valid files found in the provided path. Ensure the file paths are correct.")
-
-        self.image_paths = list(set(self.image_paths + new_paths))
-        self.ui.createBrowseInput.clear()
-        self._populate_scroll_area()
-
-    def _populate_scroll_area(self):
-        """Display images in the scroll area."""
-        self.image_display_handler.populate_scroll_area(
-            container=self.ui.createScrollAreaContents,
-            image_paths=self.image_paths,
-            show_year_input=True,
-        )
-
     def handle_save(self):
-        """Save session data."""
+        """
+        Save session data, including images and metadata.
+        Performs necessary validations and saves image files, metadata, and coordinates to the appropriate directory.
+        """
         if not self._validate_save():
             return
 
@@ -85,9 +84,30 @@ class CreateDataController:
         }
         SaveHandler.save_metadata(metadata, session_name)
         AlertHandler.show_info("Data saved successfully!")
+        self.clear_page()
+
+    def clear_page(self):
+        """
+        Clear all inputs and reset the page to its initial state.
+        """
+        self.ui.saveNameInput.clear()
+        self.ui.createBrowseInput.clear()
+
+        self.ui.userLatitudeInput.clear()
+        self.ui.userLongitudeInput.clear()
+
+        self.image_display_handler.clear_layout(self.ui.createScrollAreaContents.layout())
+        self.image_paths = []
 
     def _validate_save(self):
-        """Perform all necessary validations before saving."""
+        """
+        Perform all necessary validations before saving session data.
+
+        Validates session name, image uploads, location inputs, and image years.
+
+        Returns:
+            bool: True if all validations pass, False otherwise.
+        """
         session_name = self.ui.saveNameInput.text().strip()
         if not session_name:
             return AlertHandler.show_error("Please enter a name for this data.")
@@ -112,7 +132,17 @@ class CreateDataController:
         return True
 
     def _validate_combobox(self, combo, placeholder, field_name):
-        """Check if ComboBox has a valid selection."""
+        """
+        Check if a combobox has a valid selection.
+
+        Args:
+            combo (QComboBox): The combobox to validate.
+            placeholder (str): Placeholder text to check against.
+            field_name (str): Name of the field for error messages.
+
+        Returns:
+            bool: True if the combobox has a valid selection, False otherwise.
+        """
         value = combo.currentText().strip()
         if not value or value == placeholder:
             AlertHandler.show_error(f"Please select a valid {field_name}.")
@@ -120,7 +150,14 @@ class CreateDataController:
         return True
 
     def _validate_coordinates(self):
-        """Check if latitude and longitude inputs are valid."""
+        """
+        Validate latitude and longitude inputs.
+
+        Ensures that latitude and longitude values are provided and are valid numbers.
+
+        Returns:
+            bool: True if inputs are valid, False otherwise.
+        """
         lat = self.ui.userLatitudeInput.text().strip()
         lon = self.ui.userLongitudeInput.text().strip()
         if not lat or not lon:
@@ -130,15 +167,44 @@ class CreateDataController:
             AlertHandler.show_error("Latitude and longitude must be valid numbers.")
             return False
         return True
-
+    
     def _validate_image_years(self):
-        """Ensure all images have valid years."""
-        return self.image_display_handler.validate_image_years(self.ui.createScrollAreaContents)
+        """Ensure all images in the scroll area have valid years."""
+        layout = self.ui.createScrollAreaContents.layout()
+        if not layout:
+            return True
+
+        for i in range(layout.count()):
+            widget = layout.itemAt(i).widget()
+            if not widget:
+                continue
+            
+            year_input = widget.findChild(QLineEdit, "yearInput")
+            if not year_input:
+                continue
+            
+            year_text = year_input.text().strip()
+            current_year = datetime.datetime.now().year # Get the current year dynamically
+            if not year_text.isdigit() or not (1900 <= int(year_text) <= current_year):
+                AlertHandler.show_error(f"Each image must have a valid year from 1990 and {current_year}.")
+                return False
+
+        return True
 
     def _get_coordinates(self):
-        """Get coordinates from inputs or API."""
+        """
+        Retrieve coordinates from inputs or API.
+
+        - If 'Select Mode' is enabled, fetch coordinates from API using selected country and city.
+        - Otherwise, use manually inserted latitude and longitude.
+        """
         if self.ui.appSelectRadio.isChecked():
-            return {"latitude": None, "longitude": None}  # Replace with API call
+            country = self.ui.appCountryCombo.currentText().strip()
+            city = self.ui.appCityCombo.currentText().strip()
+            if country and city and country != "Select a country" and city != "Select a city":
+                coords = get_coordinates(city, country)
+                if coords:
+                    return coords
         return {
             "latitude": self.ui.userLatitudeInput.text().strip(),
             "longitude": self.ui.userLongitudeInput.text().strip(),
