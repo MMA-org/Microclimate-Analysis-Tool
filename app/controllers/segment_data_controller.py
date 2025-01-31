@@ -28,9 +28,8 @@ class SegmentDataController(PageController):
         self.toggle_inputs()
 
     def _setup_ui(self):
-        """
-        Initialize UI components and connect signals.
-        """
+        "Initialize UI components and connect signals."
+
         self.ui.segmentBrowseButton.clicked.connect(
             lambda: self.handle_browse_files(self.ui.segmentBrowseInput)
         )
@@ -42,9 +41,8 @@ class SegmentDataController(PageController):
         self.ui.segmentChooseRadio.toggled.connect(lambda: self.toggle_inputs())
 
     def toggle_inputs(self):
-        """
-        Enable or disable input fields based on the selected radio button.
-        """
+        "Enable or disable input fields based on the selected radio button."
+
         widget_groups = {
             "group1": [self.ui.segmentBrowseButton, self.ui.segmentBrowseInput, self.ui.segmentUploadButton],
             "group2": [self.ui.segmentChooseCombo],
@@ -54,7 +52,6 @@ class SegmentDataController(PageController):
     def start_segmentation(self):
         """
         Start the segmentation process.
-
         Performs validation to ensure images are uploaded before proceeding with segmentation.
         """
         if not self.image_paths:
