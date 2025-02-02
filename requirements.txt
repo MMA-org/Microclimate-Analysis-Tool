@@ -6,3 +6,4 @@ requests
 pycountry
 pytest
 pytest-qt
+pyinstaller
