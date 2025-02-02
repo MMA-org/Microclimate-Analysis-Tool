@@ -71,7 +71,7 @@ class ImageDisplayHandler:
         return year_input
 
     def clear_layout(self, layout):
-        "Remove all widgets from a given layout."
+        "Remove all widgets from a given layout and delete the layout itself."
 
         if layout is not None:
             while layout.count():
@@ -83,8 +83,7 @@ class ImageDisplayHandler:
                     widget.deleteLater()
 
                 elif item.layout():
-                    self.clear_layout(item.layout())
-
+                    self.clear_layout(item.layout()) 
 
     def remove_image(self, widget, image_path, image_paths, layout, images_per_row, show_year_input):
         "Remove an image widget and refresh the scroll area."
@@ -119,7 +118,6 @@ class ImageDisplayHandler:
             )
             row, col = divmod(index, images_per_row)
             layout.addWidget(widget, row, col)
-
 
     def get_images_with_years(self, container):
         "Retrieve image filenames and their associated years from the scroll area."
