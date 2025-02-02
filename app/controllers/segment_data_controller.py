@@ -9,8 +9,6 @@ from app.utils.dataset_handler import DatasetHandler
 
 class SegmentDataController(PageController):
     """
-    Controller for managing interactions on the 'Segment Data' page.
-
     This class handles functionalities such as file browsing, uploading,
     and starting the segmentation process.
 
@@ -54,7 +52,7 @@ class SegmentDataController(PageController):
 
         widget_groups = {
             "group1": [self.ui.segmentBrowseButton, self.ui.segmentBrowseInput, self.ui.segmentUploadButton],
-            "group2": [self.ui.segmentChooseCombo],
+            "group2": [self.ui.segmentChooseCombo, self.ui.segmentAddButton],
         }
         self.handle_toggle_inputs(self.ui.segmentBrowseRadio, self.ui.segmentChooseRadio, widget_groups)
 
