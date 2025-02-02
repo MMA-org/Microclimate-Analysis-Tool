@@ -7,7 +7,7 @@ import shutil
 import json
 
 class SaveHandler:
-    BASE_DIR = "Microclimate analysis data"
+    BASE_DIR = "Microclimate Analysis Data"
 
     @staticmethod
     def ensure_base_directory_exists():

@@ -12,8 +12,6 @@ import datetime
 
 class CreateDataController(PageController):
     """
-    Controller for managing the 'Create Data' page.
-
     This class handles functionalities such as file browsing and uploading,
     validating inputs, saving session data, and dynamically updating the UI.
 

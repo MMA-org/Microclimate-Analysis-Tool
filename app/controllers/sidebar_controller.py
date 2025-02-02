@@ -4,8 +4,6 @@ Sidebar controller for managing the sidebar navigation in the GUI application.
 
 class SidebarController:
     """
-    Controller for managing sidebar interactions in the application.
-
     This class handles the behavior of the sidebar, including toggling its visibility,
     connecting buttons to their respective pages, and updating active button styles.
 

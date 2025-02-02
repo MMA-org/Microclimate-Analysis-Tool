@@ -18,7 +18,6 @@ class ImageDisplayHandler:
         layout = QVBoxLayout(container)
         layout.setAlignment(Qt.AlignTop)
 
-        # Image display
         image_label = QLabel()
         if os.path.exists(image_path):
             pixmap = QPixmap(image_path).scaled(500, 500, Qt.KeepAspectRatio, Qt.SmoothTransformation)
@@ -26,7 +25,6 @@ class ImageDisplayHandler:
         image_label.setAlignment(Qt.AlignCenter)
         layout.addWidget(image_label)
 
-        # Image details (filename, delete button, optional year input)
         details_layout = QHBoxLayout()
         details_layout.setSpacing(15)
         details_layout.setAlignment(Qt.AlignCenter)
@@ -73,43 +71,50 @@ class ImageDisplayHandler:
         return year_input
 
     def clear_layout(self, layout):
-        "Remove all widgets from a given layout."
+        "Remove all widgets from a given layout and delete the layout itself."
 
-        if not layout:
-            return
-        
-        while layout.count():
-            item = layout.takeAt(0)
-            widget = item.widget()
+        if layout is not None:
+            while layout.count():
+                item = layout.takeAt(0)
+                widget = item.widget()
 
-            if widget:
-                widget.deleteLater()
+                if widget:
+                    widget.setParent(None)
+                    widget.deleteLater()
 
-            elif item.layout():
-                self.clear_layout(item.layout())
+                elif item.layout():
+                    self.clear_layout(item.layout()) 
 
-    def remove_image(self, widget, image_path, image_paths, layout, images_per_row):
+    def remove_image(self, widget, image_path, image_paths, layout, images_per_row, show_year_input):
         "Remove an image widget and refresh the scroll area."
 
         if image_path in image_paths:
-            image_paths.remove(image_path)
-            layout.removeWidget(widget)
-            widget.deleteLater()
-            self.populate_scroll_area(layout.parentWidget(), image_paths, show_year_input=True, images_per_row=images_per_row)
+                image_paths.remove(image_path)
+                layout.removeWidget(widget)
+                widget.deleteLater()
+
+                if not image_paths:
+                    self.clear_layout(layout)
+                else:
+                    self.populate_scroll_area(layout.parentWidget(), image_paths, show_year_input, images_per_row)
 
     def populate_scroll_area(self, container, image_paths, show_year_input=False, images_per_row=2):
         "Populate the scroll area with image widgets."
 
-        layout = container.layout() or QGridLayout()
-        container.setLayout(layout)
+        layout = container.layout()
 
-        self.clear_layout(layout)
+        if layout is None:
+            layout = QGridLayout(container)
+            layout.setContentsMargins(0, 0, 0, 0)
+            container.setLayout(layout)
+        else:
+            self.clear_layout(layout)
 
         for index, image_path in enumerate(image_paths):
             widget = self.create_image_widget(
                 image_path,
                 show_year_input=show_year_input,
-                remove_callback=lambda w, p=image_path: self.remove_image(w, p, image_paths, layout, images_per_row),
+                remove_callback=lambda w, p=image_path: self.remove_image(w, p, image_paths, layout, images_per_row, show_year_input)
             )
             row, col = divmod(index, images_per_row)
             layout.addWidget(widget, row, col)
