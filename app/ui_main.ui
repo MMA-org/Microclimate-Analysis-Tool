@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1489</width>
-    <height>747</height>
+    <width>1650</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -336,7 +336,7 @@
              <number>1</number>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>2</number>
             </property>
             <widget class="QWidget" name="createDataPage">
              <property name="sizePolicy">
@@ -856,8 +856,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>88</width>
-                   <height>16</height>
+                   <width>98</width>
+                   <height>28</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -1306,8 +1306,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1257</width>
-                   <height>514</height>
+                   <width>98</width>
+                   <height>28</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -1593,8 +1593,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1257</width>
-                   <height>514</height>
+                   <width>1418</width>
+                   <height>667</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
