@@ -101,9 +101,6 @@ def calculate_class_percentages(segmentation_map, image_filename):
     return {'image_filename': image_filename, 'label_freq': label_freq}
 
 def update_json_with_label_freq(updated_images, dataset_path):
-    import json
-    from pathlib import Path
-
     json_path = Path(dataset_path) / "metadata.json"
     if not json_path.exists():
         print(f"metadata.json not found in {dataset_path}")
@@ -116,23 +113,31 @@ def update_json_with_label_freq(updated_images, dataset_path):
             print(f"Error decoding JSON in {json_path}")
             return
 
+    if "coordinates" in metadata:
+        metadata["coordinates"]["latitude"] = float(metadata["coordinates"].get("latitude", 0))
+        metadata["coordinates"]["longitude"] = float(metadata["coordinates"].get("longitude", 0))
+
     for updated_image in updated_images:
         image_filename = updated_image['image_filename']
         label_freq = updated_image['label_freq']
 
-        # Ensure 'images' key exists in metadata
+        rounded_freq = [round(freq, 2) for freq in label_freq]
+
         if "images" not in metadata:
             metadata["images"] = {}
 
-        # Ensure each image entry is a dictionary
-        if image_filename not in metadata["images"] or not isinstance(metadata["images"][image_filename], dict):
-            metadata["images"][image_filename] = {}
+        if image_filename in metadata["images"]:
+            image_data = metadata["images"][image_filename]
+            year = image_data.get("year")
 
-        # Assign label frequency
-        metadata["images"][image_filename]["freq"] = label_freq
+            metadata["images"][image_filename] = {
+                "year": year,
+                "freq": rounded_freq
+            }
+        else:
+            print(f"Warning: No year data found for image '{image_filename}' in metadata.json.")
 
     with open(json_path, 'w') as f:
         json.dump(metadata, f, indent=4)
 
-    print(f"Updated JSON file saved to {json_path}.")
 

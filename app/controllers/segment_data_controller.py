@@ -1,27 +1,11 @@
-from PyQt5.QtCore import QThread, pyqtSignal, Qt
-from PyQt5.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QProgressBar
+from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget
 from app.controllers.page_controller import PageController
-from app.utils.alert_handler import AlertHandler
+from app.utils.alert_handler import AlertHandler, LoadingDialog
 from app.utils.dataset_handler import DatasetHandler
 from app.utils.image_display import ImageDisplayHandler
 from app.model import generate_segmentation_maps
 import os
-
-
-class LoadingDialog(QDialog):
-    def __init__(self, message="Loading..."):
-        super().__init__()
-        self.setWindowTitle("Please Wait")
-        self.setModal(True)
-        layout = QVBoxLayout()
-        self.label = QLabel(message)
-        self.progress = QProgressBar()
-        self.progress.setRange(0, 0)  # Infinite progress bar
-        layout.addWidget(self.label)
-        layout.addWidget(self.progress)
-        self.setLayout(layout)
-        self.setFixedSize(300, 100)
-        self.setWindowFlags(self.windowFlags() | Qt.CustomizeWindowHint | Qt.WindowTitleHint)
 
 
 class SegmentationThread(QThread):
