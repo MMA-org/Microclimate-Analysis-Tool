@@ -26,7 +26,7 @@ class SaveHandler:
         if not os.path.exists(session_path):
             os.makedirs(session_path)
             os.makedirs(os.path.join(session_path, "images"))
-            os.makedirs(os.path.join(session_path, "segmentation"))
+            os.makedirs(os.path.join(session_path, "segmentations"))
             os.makedirs(os.path.join(session_path, "analysis/plots"))
 
         return session_path

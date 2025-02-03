@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1650</width>
-    <height>900</height>
+    <width>1649</width>
+    <height>863</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -201,7 +201,7 @@
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../assets/icons/artificial-intelligence.svg</normaloff>../assets/icons/artificial-intelligence.svg</iconset>
+              <normaloff>../assets/icons/ai.svg</normaloff>../assets/icons/ai.svg</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -336,7 +336,7 @@
              <number>1</number>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="createDataPage">
              <property name="sizePolicy">
@@ -856,8 +856,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>98</width>
-                   <height>28</height>
+                   <width>71</width>
+                   <height>16</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -1266,18 +1266,18 @@
                    </property>
                    <property name="minimumSize">
                     <size>
-                     <width>120</width>
+                     <width>150</width>
                      <height>25</height>
                     </size>
                    </property>
                    <property name="maximumSize">
                     <size>
-                     <width>120</width>
+                     <width>150</width>
                      <height>25</height>
                     </size>
                    </property>
                    <property name="text">
-                    <string>Segment</string>
+                    <string>Start Segmentation</string>
                    </property>
                   </widget>
                  </item>
@@ -1306,8 +1306,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>98</width>
-                   <height>28</height>
+                   <width>1417</width>
+                   <height>570</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -1320,6 +1320,31 @@
                   <string notr="true"/>
                  </property>
                 </widget>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="label">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="pixmap">
+                 <pixmap>../assets/icons/labels.png</pixmap>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
                </widget>
               </item>
              </layout>
@@ -1593,8 +1618,8 @@
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>1418</width>
-                   <height>667</height>
+                   <width>71</width>
+                   <height>16</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -1695,7 +1720,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../assets/icons/apps1.svg</normaloff>../assets/icons/apps1.svg</iconset>
+           <normaloff>../assets/icons/apps.svg</normaloff>../assets/icons/apps.svg</iconset>
          </property>
          <property name="iconSize">
           <size>
