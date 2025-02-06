@@ -1,0 +1,66 @@
+{
+    "coordinates": {
+        "latitude": 28.9269978,
+        "longitude": -82.0041758
+    },
+    "images": {
+        "the villages 2017.png": {
+            "year": 2018,
+            "freq": [
+                0.0,
+                0.27,
+                0.06,
+                0.08,
+                0.12,
+                0.1,
+                0.0,
+                0.37
+            ],
+            "climate": {
+                "temperature_2m_max": 26.1159,
+                "temperature_2m_min": 17.531,
+                "temperature_2m_mean": 21.4271,
+                "wind_speed_10m_max": 16.8345,
+                "wind_gusts_10m_max": 34.0729,
+                "relative_humidity_2m": 79.6301,
+                "dew_point_2m": 17.3498,
+                "surface_pressure": 1015.9308,
+                "vapour_pressure_deficit": 0.5546,
+                "soil_temperature_100_to_255cm": 22.6542,
+                "soil_moisture_100_to_255cm": 0.1308,
+                "wet_bulb_temperature_2m": 18.8275,
+                "total_column_integrated_water_vapour": 34.2185,
+                "direct_radiation": 118.6219
+            }
+        },
+        "the villages 2007.png": {
+            "year": 2007,
+            "freq": [
+                0.0,
+                0.21,
+                0.0,
+                0.0,
+                0.13,
+                0.08,
+                0.57,
+                0.0
+            ],
+            "climate": {
+                "temperature_2m_max": 27.5164,
+                "temperature_2m_min": 17.6995,
+                "temperature_2m_mean": 22.2296,
+                "wind_speed_10m_max": 15.3523,
+                "wind_gusts_10m_max": 34.1526,
+                "relative_humidity_2m": 71.1203,
+                "dew_point_2m": 16.0008,
+                "surface_pressure": 1015.0564,
+                "vapour_pressure_deficit": 0.8806,
+                "soil_temperature_100_to_255cm": 23.2025,
+                "soil_moisture_100_to_255cm": 0.1284,
+                "wet_bulb_temperature_2m": 18.3235,
+                "total_column_integrated_water_vapour": 31.4902,
+                "direct_radiation": 137.8691
+            }
+        }
+    }
+}

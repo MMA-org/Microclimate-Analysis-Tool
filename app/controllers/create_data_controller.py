@@ -69,14 +69,22 @@ class CreateDataController(PageController):
         if not coordinates or coordinates.get("latitude") is None or coordinates.get("longitude") is None:
             AlertHandler.show_error("Failed to fetch location coordinates. Please try again or enter manually.")
             return
-        
+
+        image_metadata = {}
+        images_with_years = self.image_display_handler.get_images_with_years(self.ui.createScrollAreaContents)
+        for image_name, year in images_with_years.items():
+            image_metadata[image_name] = {"year": year}
+
         metadata = {
-            "coordinates": coordinates,
-            "images": self.image_display_handler.get_images_with_years(self.ui.createScrollAreaContents),
+            "coordinates": {
+                "latitude": float(coordinates.get("latitude")),
+                "longitude": float(coordinates.get("longitude"))
+            },
+            "images": image_metadata
         }
 
         session_name = self.ui.saveNameInput.text().strip()
-        
+
         SaveHandler.save_images(self.image_paths, session_name)
         SaveHandler.save_metadata(metadata, session_name)
         AlertHandler.show_info("Data saved successfully!")

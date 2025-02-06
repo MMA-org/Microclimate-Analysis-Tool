@@ -6,4 +6,10 @@ requests
 pycountry
 pytest
 pytest-qt
+torch
+transformers
+git+https://github.com/lucasb-eyer/pydensecrf.git
 pyinstaller
+wheel
+setuptools
+seaborn
