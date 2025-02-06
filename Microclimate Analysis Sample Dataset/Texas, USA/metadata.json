@@ -1,0 +1,66 @@
+{
+    "coordinates": {
+        "latitude": 29.396013,
+        "longitude": -94.9175485
+    },
+    "images": {
+        "katy-texas-2018.png": {
+            "year": 2018,
+            "freq": [
+                0.0,
+                0.39,
+                0.1,
+                0.19,
+                0.01,
+                0.05,
+                0.01,
+                0.26
+            ],
+            "climate": {
+                "temperature_2m_max": 24.2118,
+                "temperature_2m_min": 18.4348,
+                "temperature_2m_mean": 21.2789,
+                "wind_speed_10m_max": 22.0564,
+                "wind_gusts_10m_max": 41.3605,
+                "relative_humidity_2m": 79.2435,
+                "dew_point_2m": 17.311,
+                "surface_pressure": 1017.1422,
+                "vapour_pressure_deficit": 0.5555,
+                "soil_temperature_100_to_255cm": 22.2822,
+                "soil_moisture_100_to_255cm": 0.3783,
+                "wet_bulb_temperature_2m": 18.6919,
+                "total_column_integrated_water_vapour": 34.1474,
+                "direct_radiation": 118.1269
+            }
+        },
+        "katy-texas-2012.png": {
+            "year": 2012,
+            "freq": [
+                0.0,
+                0.32,
+                0.15,
+                0.03,
+                0.1,
+                0.0,
+                0.39,
+                0.01
+            ],
+            "climate": {
+                "temperature_2m_max": 26.0921,
+                "temperature_2m_min": 18.2311,
+                "temperature_2m_mean": 22.0243,
+                "wind_speed_10m_max": 19.0798,
+                "wind_gusts_10m_max": 35.7199,
+                "relative_humidity_2m": 77.1364,
+                "dew_point_2m": 17.4911,
+                "surface_pressure": 1016.2397,
+                "vapour_pressure_deficit": 0.6631,
+                "soil_temperature_100_to_255cm": 22.998,
+                "soil_moisture_100_to_255cm": 0.3358,
+                "wet_bulb_temperature_2m": 19.0609,
+                "total_column_integrated_water_vapour": 30.4479,
+                "direct_radiation": 134.0361
+            }
+        }
+    }
+}

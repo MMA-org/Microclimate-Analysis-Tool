@@ -1,3 +1,7 @@
+"""
+Controller for managing the 'Segment Data' page in the GUI application.
+"""
+
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QHBoxLayout, QVBoxLayout, QWidget
 from app.controllers.page_controller import PageController
@@ -7,8 +11,13 @@ from app.utils.image_display import ImageDisplayHandler
 from app.model import generate_segmentation_maps
 import os
 
-
 class SegmentationThread(QThread):
+    """
+    Thread class to handle segmentation processing in the background.
+
+    Args:
+        dataset_path (str): Path to the dataset directory.
+    """
     finished = pyqtSignal()
 
     def __init__(self, dataset_path):
@@ -16,10 +25,23 @@ class SegmentationThread(QThread):
         self.dataset_path = dataset_path
 
     def run(self):
+        """Run the segmentation model on the specified dataset."""
         generate_segmentation_maps(self.dataset_path)
         self.finished.emit()
 
 class SegmentDataController(PageController):
+    """
+    Controller for managing the 'Segment Data' page functionalities.
+
+    Handles image uploads, dataset selection, segmentation execution, and displaying results.
+
+    Args:
+        main_window (QMainWindow): The main application window containing the UI components.
+
+    Attributes:
+        ui (QMainWindow): Reference to the main window's UI.
+    """
+
     def __init__(self, main_window):
         super().__init__()
         self.ui = main_window
@@ -31,6 +53,8 @@ class SegmentDataController(PageController):
         self.toggle_inputs()
 
     def _setup_ui(self):
+        "Initialize UI components and connect signals."
+
         self.ui.segmentBrowseButton.clicked.connect(
             lambda: self.handle_browse_files(self.ui.segmentBrowseInput)
         )
@@ -50,6 +74,8 @@ class SegmentDataController(PageController):
         self.ui.segmentAddButton.clicked.connect(self.add_images_from_dataset)
 
     def toggle_inputs(self):
+        """Enable or disable input fields based on the selected radio button."""
+
         widget_groups = {
             "group1": [self.ui.segmentBrowseButton, self.ui.segmentBrowseInput, self.ui.segmentUploadButton],
             "group2": [self.ui.segmentChooseCombo, self.ui.segmentAddButton],
@@ -57,6 +83,11 @@ class SegmentDataController(PageController):
         self.handle_toggle_inputs(self.ui.segmentBrowseRadio, self.ui.segmentChooseRadio, widget_groups)
 
     def add_images_from_dataset(self):
+        """
+        Add images from the selected dataset to the scroll area.
+        Validates dataset selection and displays corresponding images.
+        """
+
         dataset_name = self.ui.segmentChooseCombo.currentText()
         if dataset_name == "No datasets found" or not dataset_name:
             AlertHandler.show_error("Please select a valid dataset.")
@@ -71,38 +102,43 @@ class SegmentDataController(PageController):
         self.handle_display_images(image_paths, self.ui.segmentScrollAreaContents, show_year_input=False)
 
     def handle_display_images(self, image_paths, scroll_area, show_year_input=False):
+        "Display images in the provided scroll area."
+
         self.image_display_handler.clear_layout(scroll_area.layout())
 
         self.image_paths = image_paths
-        images_per_row = 1  # Display one image per row
+        images_per_row = 1
 
         self.image_display_handler.populate_scroll_area(scroll_area, self.image_paths, show_year_input, images_per_row)
 
     def start_segmentation(self):
+        """
+        Start the segmentation process.
+        Validates inputs, triggers background processing, and handles UI updates during segmentation.
+        """
+
         if not self.image_paths:
             return AlertHandler.show_error("No images have been uploaded. Please upload images before starting segmentation.")
 
-        # Determine dataset directory
         if self.ui.segmentChooseRadio.isChecked():
             dataset_name = self.ui.segmentChooseCombo.currentText()
             dataset_path = self.dataset_handler.get_dataset_path(dataset_name)
         else:
-            dataset_path = os.path.dirname(self.image_paths[0])  # Use the directory of the uploaded images
+            dataset_path = os.path.dirname(self.image_paths[0])
 
-        # Check if dataset directory exists
         if not os.path.exists(dataset_path):
             return AlertHandler.show_error(f"Dataset directory '{dataset_path}' does not exist.")
 
-        # Show loading dialog
         self.loading_dialog = LoadingDialog("Running Segmentation... This may take a while.")
         self.loading_dialog.show()
 
-        # Start the segmentation process in a separate thread
         self.segmentation_thread = SegmentationThread(dataset_path)
-        self.segmentation_thread.finished.connect(lambda: self.on_segmentation_complete(dataset_path))  # Pass dataset_path
+        self.segmentation_thread.finished.connect(lambda: self.on_segmentation_complete(dataset_path))
         self.segmentation_thread.start()
 
     def on_segmentation_complete(self, dataset_path):
+        " Handle post-segmentation processing."
+
         self.loading_dialog.close()
         self.ui.startSegmentButton.setEnabled(True)
 
@@ -118,7 +154,6 @@ class SegmentDataController(PageController):
         if not segmentation_maps:
             return AlertHandler.show_error("No segmentation maps generated.")
 
-        # Clear the scroll area before adding new items
         layout = self.ui.segmentScrollAreaContents.layout()
         if layout is None:
             layout = QVBoxLayout(self.ui.segmentScrollAreaContents)
@@ -126,22 +161,19 @@ class SegmentDataController(PageController):
         else:
             self.image_display_handler.clear_layout(layout)
 
-        # Display images with their segmentation maps side by side
         for image_path in self.image_paths:
             container_widget = QWidget()
-            hbox_layout = QHBoxLayout(container_widget)  # Horizontal layout for side-by-side display
+            hbox_layout = QHBoxLayout(container_widget)
 
-            # Original image
             original_widget = self.image_display_handler.create_image_widget(image_path)
             hbox_layout.addWidget(original_widget)
 
-            # Corresponding segmentation map
             image_name = os.path.splitext(os.path.basename(image_path))[0]
             if image_name in segmentation_maps:
                 seg_map_path = segmentation_maps[image_name]
                 segmentation_widget = self.image_display_handler.create_image_widget(seg_map_path)
                 hbox_layout.addWidget(segmentation_widget)
 
-            layout.addWidget(container_widget)  # Add the container (original + segmentation) to the scroll area
+            layout.addWidget(container_widget)
 
         AlertHandler.show_info("Segmentation completed successfully.")

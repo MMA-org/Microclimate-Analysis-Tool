@@ -69,6 +69,3 @@ if __name__ == "__main__":
     window = MainApp()
     window.showMaximized()
     sys.exit(app.exec_())
-
-
-# For executable : pyinstaller --onefile --windowed --icon=assets/icons/main.ico --name "Microclimate Analysis" --add-data "app/ui_main.ui;app" --add-data "app/utils/styles.json;app/utils" --add-data "assets/icons;assets/icons" main.py

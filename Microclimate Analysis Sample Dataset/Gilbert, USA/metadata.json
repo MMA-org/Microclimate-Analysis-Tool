@@ -1,0 +1,66 @@
+{
+    "coordinates": {
+        "latitude": 33.3527632,
+        "longitude": -111.789037
+    },
+    "images": {
+        "gilbert-az-2019.png": {
+            "year": 2019,
+            "freq": [
+                0.0,
+                0.07,
+                0.36,
+                0.07,
+                0.03,
+                0.0,
+                0.01,
+                0.46
+            ],
+            "climate": {
+                "temperature_2m_max": 29.4956,
+                "temperature_2m_min": 15.6118,
+                "temperature_2m_mean": 22.4595,
+                "wind_speed_10m_max": 15.2732,
+                "wind_gusts_10m_max": 32.9175,
+                "relative_humidity_2m": 37.2406,
+                "dew_point_2m": 3.8119,
+                "surface_pressure": 969.1927,
+                "vapour_pressure_deficit": 2.3068,
+                "soil_temperature_100_to_255cm": 24.2536,
+                "soil_moisture_100_to_255cm": 0.1433,
+                "wet_bulb_temperature_2m": 12.5005,
+                "total_column_integrated_water_vapour": 17.5035,
+                "direct_radiation": 171.8299
+            }
+        },
+        "gilbert-az-2013.png": {
+            "year": 2013,
+            "freq": [
+                0.0,
+                0.07,
+                0.18,
+                0.02,
+                0.01,
+                0.0,
+                0.6,
+                0.13
+            ],
+            "climate": {
+                "temperature_2m_max": 29.3556,
+                "temperature_2m_min": 14.7786,
+                "temperature_2m_mean": 22.4693,
+                "wind_speed_10m_max": 12.6567,
+                "wind_gusts_10m_max": 28.9764,
+                "relative_humidity_2m": 34.4169,
+                "dew_point_2m": 2.295,
+                "surface_pressure": 969.2651,
+                "vapour_pressure_deficit": 2.3955,
+                "soil_temperature_100_to_255cm": 25.203,
+                "soil_moisture_100_to_255cm": 0.1515,
+                "wet_bulb_temperature_2m": 11.9665,
+                "total_column_integrated_water_vapour": 16.2636,
+                "direct_radiation": 196.926
+            }
+        }
+    }
+}

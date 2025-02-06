@@ -1,0 +1,3 @@
+year,class_1,class_2,class_3,class_4,class_5,class_6,class_7,class_8,temperature_2m_max,temperature_2m_min,temperature_2m_mean,wind_speed_10m_max,wind_gusts_10m_max,relative_humidity_2m,dew_point_2m,surface_pressure,vapour_pressure_deficit,soil_temperature_100_to_255cm,soil_moisture_100_to_255cm,wet_bulb_temperature_2m,total_column_integrated_water_vapour,direct_radiation,urban,rural
+2007,0.0,0.21,0.0,0.0,0.13,0.08,0.57,0.0,27.5164,17.6995,22.2296,15.3523,34.1526,71.1203,16.0008,1015.0564,0.8806,23.2025,0.1284,18.3235,31.4902,137.8691,0.0,100.0
+2018,0.0,0.27,0.06,0.08,0.12,0.1,0.0,0.37,26.1159,17.531,21.4271,16.8345,34.0729,79.6301,17.3498,1015.9308,0.5546,22.6542,0.1308,18.8275,34.2185,118.6219,51.0,49.0

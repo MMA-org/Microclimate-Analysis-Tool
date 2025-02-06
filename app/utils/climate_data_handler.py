@@ -9,13 +9,8 @@ class ClimateDataHandler:
         "temperature_2m_max",
         "temperature_2m_min",
         "temperature_2m_mean",
-        "apparent_temperature_max",
-        "apparent_temperature_min",
-        "apparent_temperature_mean",
         "wind_speed_10m_max",
         "wind_gusts_10m_max",
-        "shortwave_radiation_sum",
-        "et0_fao_evapotranspiration"
     ]
 
     HOURLY_PARAMS = [
@@ -27,10 +22,7 @@ class ClimateDataHandler:
         "soil_moisture_100_to_255cm",
         "wet_bulb_temperature_2m",
         "total_column_integrated_water_vapour",
-        "shortwave_radiation",
         "direct_radiation",
-        "diffuse_radiation",
-        "direct_normal_irradiance"
     ]
 
     def fetch_climate_data(self, latitude, longitude, years):

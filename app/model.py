@@ -54,7 +54,7 @@ def generate_segmentation_maps(dataset_path):
 
     with torch.no_grad():
         for image_path in images:
-            image = Image.open(image_path)
+            image = Image.open(image_path).convert("RGB")
             inputs = feature_extractor(images=image, return_tensors="pt")
             logits = model(**inputs).logits
 

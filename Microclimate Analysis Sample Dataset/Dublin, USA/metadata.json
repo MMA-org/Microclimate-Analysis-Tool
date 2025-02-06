@@ -1,0 +1,66 @@
+{
+    "coordinates": {
+        "latitude": 40.0996009,
+        "longitude": -83.1135563
+    },
+    "images": {
+        "dublin 2018.png": {
+            "year": 2018,
+            "freq": [
+                0.17,
+                0.12,
+                0.14,
+                0.14,
+                0.06,
+                0.0,
+                0.0,
+                0.37
+            ],
+            "climate": {
+                "temperature_2m_max": 15.9501,
+                "temperature_2m_min": 6.997,
+                "temperature_2m_mean": 11.4148,
+                "wind_speed_10m_max": 17.7507,
+                "wind_gusts_10m_max": 39.5271,
+                "relative_humidity_2m": 74.9659,
+                "dew_point_2m": 6.7974,
+                "surface_pressure": 987.9424,
+                "vapour_pressure_deficit": 0.4133,
+                "soil_temperature_100_to_255cm": 12.0734,
+                "soil_moisture_100_to_255cm": 0.397,
+                "wet_bulb_temperature_2m": 8.8469,
+                "total_column_integrated_water_vapour": 21.474,
+                "direct_radiation": 96.5404
+            }
+        },
+        "dublin 2009.png": {
+            "year": 2009,
+            "freq": [
+                0.52,
+                0.05,
+                0.06,
+                0.03,
+                0.01,
+                0.0,
+                0.26,
+                0.07
+            ],
+            "climate": {
+                "temperature_2m_max": 15.4052,
+                "temperature_2m_min": 6.4249,
+                "temperature_2m_mean": 10.8474,
+                "wind_speed_10m_max": 17.9329,
+                "wind_gusts_10m_max": 37.7219,
+                "relative_humidity_2m": 69.7747,
+                "dew_point_2m": 5.1299,
+                "surface_pressure": 986.7922,
+                "vapour_pressure_deficit": 0.4982,
+                "soil_temperature_100_to_255cm": 11.5322,
+                "soil_moisture_100_to_255cm": 0.3544,
+                "wet_bulb_temperature_2m": 7.7169,
+                "total_column_integrated_water_vapour": 17.9916,
+                "direct_radiation": 107.8969
+            }
+        }
+    }
+}
