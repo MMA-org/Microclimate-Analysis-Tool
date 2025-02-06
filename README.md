@@ -6,7 +6,7 @@ The **Microclimate Analysis Tool** is an interactive GUI application designed fo
 
 Watch the demonstration of the application to see its core features in action:
 
-[![Demo Video](https://img.youtube.com/vi/demo.mp4/0.jpg)](demo.mp4)
+[![Demo Video](https://github.com/MMA-org/Microclimate-Analysis-Tool/blob/main/demo.mp4)](demo.mp4)
 
 ## Microclimate Analysis Sample Dataset
 
